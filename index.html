@@ -121,12 +121,13 @@
             margin-bottom: 50px;
         }
 
-        .tabcontent.active {
-            display: flex;
-            opacity: 1;
-            visibility: visible;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
+.tabcontent.active {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+    z-index: 1; /* повысить z-index для активного контента */
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
 
 
         .row {
@@ -631,56 +632,109 @@
     transform: translateY(2px);
 }
 
-.language-selection {
-    display: flex;
-    flex-wrap: wrap; /* Иконки будут переноситься на новую строку, если не помещаются */
-    justify-content: center; /* Центрирование иконок */
-    gap: 10px; /* Расстояние между иконками */
-    padding: 20px;
-}
-
-.language-option {
-    width: 50px; /* Размер иконок */
-    height: 50px;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: transform 0.2s;
-}
-
-.language-option:hover {
-    transform: scale(1.1); /* Увеличение иконки при наведении */
-}
-
-@media (max-width: 600px) {
-    .language-option {
-        width: 40px; /* Уменьшаем размер иконок для мобильных устройств */
-        height: 40px;
+    body {
+      background: #111;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
     }
+
+.stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2; /* уменьшите z-index, чтобы фон не перекрывал содержимое */
 }
 
 
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      animation: twinkle 1s infinite alternate;
+    }
 
+    @keyframes twinkle {
+      from { opacity: 0.2; }
+      to { opacity: 1; }
+    }
 
-    </style>
+    .language-selection {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(5, auto);
+      grid-template-rows: repeat(2, auto);
+      gap: 10px;
+      justify-content: center;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    .language-option {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .language-option:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+    .language-option img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+  </style>
 </head>
 <body>
-    <header>
+  <!-- Звездный фон -->
+  <div class="stars" id="stars"></div>
 
-        <span>EntyLudik</span>
-    </header>
+  <div class="language-selection">
+    <div class="language-option" onclick="changeLanguage('en')">
+      <img src="en.png" alt="English">
+    </div>
+    <div class="language-option" onclick="changeLanguage('ru')">
+      <img src="ru.png" alt="Русский">
+    </div>
+    <div class="language-option" onclick="changeLanguage('hi')">
+      <img src="in.png" alt="हिंदी">
+    </div>
+    <div class="language-option" onclick="changeLanguage('br')">
+      <img src="br.png" alt="Português (BR)">
+    </div>
+    <div class="language-option" onclick="changeLanguage('es')">
+      <img src="es.png" alt="Español">
+    </div>
+    <div class="language-option" onclick="changeLanguage('uz')">
+      <img src="uz.png" alt="O'zbek">
+    </div>
+    <div class="language-option" onclick="changeLanguage('az')">
+      <img src="az.png" alt="Azərbaycan">
+    </div>
+    <div class="language-option" onclick="changeLanguage('tr')">
+      <img src="tr.png" alt="Türkçe">
+    </div>
+    <div class="language-option" onclick="changeLanguage('pt')">
+      <img src="pt.png" alt="Português">
+    </div>
+    <div class="language-option" onclick="changeLanguage('ar')">
+      <img src="ar.png" alt="العربية">
+    </div>
+  </div>
 
-<div class="language-selection">
-    <img src="en.png" alt="English" class="language-option" onclick="changeLanguage('en')">
-    <img src="ru.png" alt="Русский" class="language-option" onclick="changeLanguage('ru')">
-    <img src="in.png" alt="हिंदी" class="language-option" onclick="changeLanguage('hi')">
-    <img src="br.png" alt="Português (Brasil)" class="language-option" onclick="changeLanguage('br')">
-    <img src="es.png" alt="Español" class="language-option" onclick="changeLanguage('es')">
-    <img src="uz.png" alt="O'zbek" class="language-option" onclick="changeLanguage('uz')">
-    <img src="az.png" alt="Azərbaycan dili" class="language-option" onclick="changeLanguage('az')">
-    <img src="tr.png" alt="Türkçe" class="language-option" onclick="changeLanguage('tr')">
-    <img src="pt.png" alt="Português" class="language-option" onclick="changeLanguage('pt')">
-    <img src="ar.png" alt="العربية" class="language-option" onclick="changeLanguage('ar')">
-</div>
+
 
 
 <div id="Contact" class="tabcontent">
@@ -720,7 +774,8 @@
     </div>
 </div>
 
-<div id="Games" class="tabcontent active" style="display: flex;">
+<div id="Games" class="tabcontent active">
+
     <div class="row">
         <div class="game">
             <img src="1.png" alt="Mines Preview">
@@ -771,8 +826,16 @@
                 <button id="game7-button" onclick="openGame('footballX')">Open</button>
             </div>
         </div>
+        <div class="game">
+            <img src="11.png" alt="CoinFlip Preview">
+            <div class="game-info">
+                <h3 id="game10-title">CoinFlip</h3>
+                <button id="game10-button" onclick="openGame('coin')">Open</button>
+            </div>
+        </div>
     </div>
 </div>
+
 
 <div class="tab">
     <button class="tablinks games-icon" data-tab="Games" onclick="openTab(event, 'Games', this)">
@@ -784,9 +847,9 @@
 </div>
 
 
-<canvas id="particleCanvas"></canvas>
+
 <audio id="aboutAudio" src="gif.mp3"></audio>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         let gamesButton = document.querySelector('.tablinks.games-icon');
@@ -817,7 +880,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "Open",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "Open",
+        game10Button: "Open",
         telegramButton: "Go to telegram (RU)",
         telegramButton2: "Go to telegram (EN)"
     },
@@ -842,7 +907,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "Открыть",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "Открыть",
+        game10Button: "Открыть",
         telegramButton: "Перейти в телеграм (RU)",
         telegramButton2: "Перейти в телеграм (EN)"
     },
@@ -867,7 +934,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "खोलें",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "खोलें",
+        game10Button: "खोलें",
         telegramButton: "टेलीग्राम पर जाएं (RU)",
         telegramButton2: "टेलीग्राम पर जाएं (EN)"
     },
@@ -892,7 +961,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "Abrir",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "Abrir",
+        game10Button: "Abrir",
         telegramButton: "Ir para o Telegram (RU)",
         telegramButton2: "Ir para o Telegram (EN)"
     },
@@ -917,7 +988,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "Abrir",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "Abrir",
+        game10Button: "Abrir",
         telegramButton: "Ir a Telegram (RU)",
         telegramButton2: "Ir a Telegram (EN)"
     },
@@ -942,7 +1015,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "Ochish",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "Ochish",
+        game10Button: "Ochish",
         telegramButton: "Telegramga o'tish (RU)",
         telegramButton2: "Telegramga o'tish (EN)"
     },
@@ -967,7 +1042,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "Aç",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "Aç",
+        game10Button: "Aç",
         telegramButton: "Teleqrama keç (RU)",
         telegramButton2: "Teleqrama keç (EN)"
     },
@@ -992,7 +1069,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "Aç",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "Aç",
+        game10Button: "Aç",
         telegramButton: "Telegrame git (RU)",
         telegramButton2: "Telegrame git (EN)"
     },
@@ -1017,7 +1096,9 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "Abrir",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "Abrir",
+        game10Button: "Abrir",
         telegramButton: "Ir para o Telegram (RU)",
         telegramButton2: "Ir para o Telegram (EN)"
     },
@@ -1042,65 +1123,91 @@ const translations = {
         game8Title: "Penalty Shoot",
         game8Button: "فتح",
         game9Title: "Football X",
+        game10Title: "CoinFlip",
         game9Button: "فتح",
+        game10Button: "فتح",
         telegramButton: "اذهب إلى Telegram (RU)",
         telegramButton2: "اذهب إلى Telegram (EN)"
     }
 };
 
 
-function changeLanguage(lang) {
-    console.log("Changing language to: ", lang);
-    console.log("Translations for this language: ", translations[lang]);
+    function changeLanguage(lang) {
+        console.log("Changing language to: ", lang);
+        console.log("Translations for this language: ", translations[lang]);
 
-    if (translations[lang]) {
-        document.getElementById('game-picker-title').innerText = translations[lang].gamePickerTitle;
-        document.getElementById('detect-button').innerText = translations[lang].detectButton;
-        document.getElementById('start-button').innerText = translations[lang].startButton;
+        if (translations[lang]) {
+            document.getElementById('game-picker-title').innerText = translations[lang].gamePickerTitle;
+            document.getElementById('detect-button').innerText = translations[lang].detectButton;
+            document.getElementById('start-button').innerText = translations[lang].startButton;
 
-        document.getElementById('game1-title').innerText = translations[lang].game1Title;
-        document.getElementById('game1-button').innerText = translations[lang].game1Button;
+            document.getElementById('game1-title').innerText = translations[lang].game1Title;
+            document.getElementById('game1-button').innerText = translations[lang].game1Button;
 
-        document.getElementById('game2-title').innerText = translations[lang].game2Title;
-        document.getElementById('game2-button').innerText = translations[lang].game2Button;
+            document.getElementById('game2-title').innerText = translations[lang].game2Title;
+            document.getElementById('game2-button').innerText = translations[lang].game2Button;
 
-        document.getElementById('game3-title').innerText = translations[lang].game3Title;
-        document.getElementById('game3-button').innerText = translations[lang].game3Button;
+            document.getElementById('game3-title').innerText = translations[lang].game3Title;
+            document.getElementById('game3-button').innerText = translations[lang].game3Button;
 
-        document.getElementById('game4-title').innerText = translations[lang].game4Title;
-        document.getElementById('game4-button').innerText = translations[lang].game4Button;
+            document.getElementById('game4-title').innerText = translations[lang].game4Title;
+            document.getElementById('game4-button').innerText = translations[lang].game4Button;
 
-        document.getElementById('game5-title').innerText = translations[lang].game5Title;
-        document.getElementById('game5-button').innerText = translations[lang].game5Button;
+            document.getElementById('game5-title').innerText = translations[lang].game5Title;
+            document.getElementById('game5-button').innerText = translations[lang].game5Button;
 
-        document.getElementById('game6-title').innerText = translations[lang].game6Title;
-        document.getElementById('game6-button').innerText = translations[lang].game6Button;
+            document.getElementById('game6-title').innerText = translations[lang].game6Title;
+            document.getElementById('game6-button').innerText = translations[lang].game6Button;
 
-        document.getElementById('game7-title').innerText = translations[lang].game7Title;
-        document.getElementById('game7-button').innerText = translations[lang].game7Button;
+            document.getElementById('game7-title').innerText = translations[lang].game7Title;
+            document.getElementById('game7-button').innerText = translations[lang].game7Button;
 
-        document.getElementById('game8-title').innerText = translations[lang].game8Title;
-        document.getElementById('game8-button').innerText = translations[lang].game8Button;
+            document.getElementById('game10-title').innerText = translations[lang].game10Title;
+            document.getElementById('game10-button').innerText = translations[lang].game10Button;
 
-        document.getElementById('game9-title').innerText = translations[lang].game9Title;
-        document.getElementById('game9-button').innerText = translations[lang].game9Button;
-
-        // Обновляем текст для кнопок Telegram
-        document.getElementById('telegram-button').innerText = translations[lang].telegramButton;
-        document.getElementById('telegram-button2').innerText = translations[lang].telegramButton2;
-
-        // Обновляем текст минимодала
-        document.querySelector('.modal-content-mini h2').innerText = translations[lang].miniModalTitle;
-        document.querySelector('.modal-content-mini p').innerText = translations[lang].miniModalContent
-            .replace('{gameName}', 'игры')  // Здесь можно заменить на конкретную игру
-            .replace('{probability}', '90')  // Можно заменить на реальные данные
-            .replace('{remainingTime}', '30');  // Заменить на оставшееся время
-
-        document.querySelector('.close-button-mini').innerText = translations[lang].miniModalButton;
-    } else {
-        console.error("Translations not found for language: ", lang);
+            // Обновляем текст для кнопок Telegram
+            document.getElementById('telegram-button').innerText = translations[lang].telegramButton;
+            document.getElementById('telegram-button2').innerText = translations[lang].telegramButton2;
+        } else {
+            console.error("Translations not found for language: ", lang);
+        }
     }
-}
+
+
+
+    // Создаем звезды
+    function createStars() {
+      const stars = document.getElementById('stars');
+      const count = 320; // количество звезд
+
+      for(let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        
+        // Рандомное положение
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        // Рандомный размер
+        const size = Math.random() * 5;
+        
+        star.style.left = x + '%';
+        star.style.top = y + '%';
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        
+        // Рандомная задержка мерцания
+        star.style.animationDelay = Math.random() * 2 + 's';
+        
+        stars.appendChild(star);
+      }
+    }
+
+    // Запускаем создание звезд
+    createStars();
+
+
+
 
 
 
@@ -1449,6 +1556,10 @@ function openGame(game) {
         footballX: {
             ios: 'https://entyludik.github.io/entyfootx/',
             other: 'https://entyludik.github.io/entyfootx/'
+        },
+        coin: {
+            ios: 'https://entyludik.github.io/entycoin/',
+            other: 'https://entyludik.github.io/entycoin/'
         },
         minesSpibe: {
             ios: 'https://entyludik.github.io/entyspibe/',
